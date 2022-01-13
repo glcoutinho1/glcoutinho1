@@ -19,10 +19,21 @@ import discretizador as discret
 
 from yellowbrick.target import ClassBalance
 
+def plotar_histogramas(df):
+    fig, axes = plt.subplots(3, 3, sharey=True, constrained_layout=True, figsize=(18,10))
+    i = 0
+    j = 0
+    for var in vars_quantitativas:
+        sb.histplot(data=df, x=var, bins = 10, stat='percent', ax=axes[i,j])
+        j = j + 1
+        if (j == 3):
+            i = i + 1
+            j = 0
+            
 debug = False
 gerarGraficos = False
 gerarRelatorio = False
-treinar = True
+treinar = False
 cn = ['Não Fraude', 'Fraude']
 
 #carrega dados para atributos
@@ -124,6 +135,10 @@ if (gerarGraficos):
     fig.suptitle("Correlação Variáveis Quantitativas (LOG)", fontsize = 18, fontweight='bold') 
     fig.savefig('figs/heatmap_quant_log.png')
 
+#plotar histogramas
+if (gerarGraficos):
+    plotar_histogramas(df_fim)
+    plotar_histogramas(df_fim_log)
 
 #analise e exploracao das variaveis qualitativas
 vars_qualitativas = ['cd_submodalidade', 'cd_ua_jurisdicao_aduana', 'cnae']
